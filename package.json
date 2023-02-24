@@ -1,20 +1,19 @@
 {
-  "name": "googleappenginetest",
-  "version": "1.0.0",
-  "description": "",
+  "name": "kssc-esp-api-db",
+  "version": "0.1.0",
+  "description": "ESP Sqlanywhere database wrapper for HTTP communications.",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "debug": "nodemon --inspect app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Phyllip Hall",
   "license": "MIT",
   "dependencies": {
-    "@google-cloud/debug-agent": "^7.2.2",
-    "@koa/cors": "^4.0.0",
-    "axios": "^1.3.3",
+    "@vorian77/node_utilities": "github:vorian77/utilities_node",
+    "dotenv": "^16.0.3",
     "koa": "^2.14.1",
-    "koa-bodyparser": "^4.3.0",
     "koa-router": "^12.0.0"
   },
   "devDependencies": {

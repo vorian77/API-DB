@@ -1,38 +1,45 @@
-require('@google-cloud/debug-agent').start({serviceContext: {enableCanary: true}});
-const Koa = require('koa');
-const parser = require('koa-bodyparser');
-const cors = require('@koa/cors');
-const Router = require('koa-router');
-const axios = require('axios'); 
+"use strict";
+
+const path = require('path');
+require('dotenv').config({ path: path.join(process.cwd(), '.env')});
+const fs = require('fs');
+const https = require('https');
 const qs = require('qs'); 
 
-const app = new Koa();
+const Koa = require('koa');
+const Router = require('koa-router');
+
+const { http_request, espConnect } = require('./esp.js');
+
+//environment parms
+const HTTPS_PORT = process.env.HTTPS_PORT
+const HTTPS_CERT = process.env.HTTPS_CERT
+const HTTPS_CERT_PW = process.env.HTTPS_CERT_PW
+
+// router
 const router = new Router();
-const port = process.env.PORT || 8080;
+router.get('/', (ctx) => { ctx.body = 'Hello from the KidSmart ESP database API!'});
+router.get('/test/echo', (ctx) => { echo(ctx); });
+router.all('/test/http_request', async (ctx) => { await http_request(ctx); });
+router.all('/esp(.*)', async (ctx) => { await espConnect(ctx); });
 
-router.get('/', (ctx) => { ctx.body = 'Hello From Google App Engine Test!'});
-router.get('/echo', (ctx) => { echo(ctx); });
-router.post('/request', async (ctx) => { await request(ctx); });
-
-app
-  .use(parser())
-  .use(cors())
-  .use(router.routes())
-  .listen(port, () => { console.log(`Server listening on port: ${port}`)})
+// app
+const app = new Koa();
+app.use(router.routes());
   
-function echo(ctx) {
-  const rtn = `echo value: ${ctx.query.parmValue}`; 
-  console.log(rtn);
-  ctx.body = rtn;
+// https listener - certificates  
+var options = {
+  pfx: fs.readFileSync(HTTPS_CERT),
+  passphrase: HTTPS_CERT_PW
 }
 
-async function request(ctx) {
-  const url = "https://esp1.kssc.com:8443/ws_test"
-  const queryParms = qs.stringify(ctx.query);
-  const options = { method: "post", url, data: queryParms }
-  
-  console.log('Axios options...', options);
-  const rtn = await axios(options);
-  console.log('Axios successful.');
-  ctx.body = rtn.data[0];
+// https listener - listener
+https
+  .createServer(options, app.callback())
+  .listen(HTTPS_PORT, () => { console.log(`Server listening on port: ${HTTPS_PORT}`) });
+
+function echo(ctx) {
+  const rtn = 'Query Param(s): ' + qs.stringify(ctx.query);
+  console.log(rtn);
+  ctx.body = rtn;
 }
