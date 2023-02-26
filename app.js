@@ -8,7 +8,7 @@ const https = require('https');
 const Koa = require('koa');
 const Router = require('koa-router');
 
-const { esp } = require('./esp.js');
+const esp = require('./esp.js');
 
 //environment parms
 const HTTPS_PORT = process.env.HTTPS_PORT
