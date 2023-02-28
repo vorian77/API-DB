@@ -22,7 +22,7 @@ async function transmit(ctx) {
   const url = process.env.ESP_DB_URL + espFunction;
     
   try {
-    const rtn = await http(method, url, ctx.query);
+    const rtn = await http(method, url, ctx);
     ctx.status = rtn.status;
 
     // ESP specific success processing

@@ -3,16 +3,16 @@
 const axios = require('axios'); 
 const qs = require('qs'); 
 
-module.exports = async function (method, url, queryParms) {
-  let options;
+module.exports = async function (method, url, ctx) {
+  let options = { method, url, timeout: 1000 };
 
   switch(method.toLowerCase()) {
     case 'get':
-      options = { method, url, params: queryParms, timeout: 1000 }
+      options.params = ctx.query;
       break;
 
     default:  // put, post, delete, patch
-      options = { method, url, data: qs.stringify(queryParms), timeout: 1000 }
+      options.data = qs.stringify(ctx.request.body);
   }
     
   try {

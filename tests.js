@@ -12,10 +12,9 @@ module.exports.testEcho = function (ctx) {
 module.exports.testHttp = async function (ctx) {
   const method = ctx.request.method;
   const url = ctx.query.url;
-  const query = ctx.query;
 
   try {
-    const response = await http(method, url, query);
+    const response = await http(method, url, ctx);
     ctx.status = response.status;
     ctx.body = response.statusText;
   } catch(err) {

@@ -6,6 +6,7 @@ const fs = require('fs');
 const https = require('https');
 
 const Koa = require('koa');
+const { koaBody } = require('koa-body');
 const Router = require('koa-router');
 
 const { testEcho, testHttp } = require('./tests.js');
@@ -22,8 +23,10 @@ router.all('/ag(.*)', async (ctx) => { await appGyver(ctx); });
 
 // app
 const app = new Koa();
-app.use(router.routes());
-  
+app
+  .use(koaBody())
+  .use(router.routes());
+
 // https listener - certificates  
 var options = {
   pfx: fs.readFileSync(process.env.HTTPS_CERT),
