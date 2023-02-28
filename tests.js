@@ -1,6 +1,6 @@
 "use strict";
 
-const { http } = require('@vorian77/node_utilities');
+const http = require('./util/http.js');
 
 module.exports.testEcho = function (ctx) {
   const rtn = 'Query Param(s): ' + JSON.stringify(ctx.query);

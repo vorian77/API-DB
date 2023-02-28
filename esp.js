@@ -1,7 +1,7 @@
 "use strict";
 
 require('dotenv').config();
-const http = require('./http.js');
+const http = require('./util/http.js');
 
 module.exports = async function (ctx) {
   encryptPassword(ctx);

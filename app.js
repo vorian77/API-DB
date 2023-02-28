@@ -8,8 +8,9 @@ const https = require('https');
 const Koa = require('koa');
 const Router = require('koa-router');
 
-const esp = require('./esp.js');
 const { testEcho, testHttp } = require('./tests.js');
+const esp = require('./esp.js');
+const appGyver = require('./appGyver.js');
 
 // router
 const router = new Router();
@@ -17,6 +18,7 @@ router.all('/', (ctx) => { ctx.body = 'Hello from the KidSmart API-ESP Database!
 router.all('/test/echo', (ctx) => { testEcho(ctx); });
 router.all('/test/http', async (ctx) => { await testHttp(ctx); });
 router.all('/esp(.*)', async (ctx) => { await esp(ctx); });
+router.all('/ag(.*)', async (ctx) => { await appGyver(ctx); });
 
 // app
 const app = new Koa();
