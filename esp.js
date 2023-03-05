@@ -29,11 +29,11 @@ async function transmit(ctx) {
     if (Array.isArray(rtn.data)) {
       ctx.body = (rtn.data.length == 1) ? rtn.data[0] : rtn.data;
     } else {
-      ctx.set('Access-Control-Allow-Origin', '*');
-      ctx.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-      ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
       ctx.body = rtn.data
     }  
+    ctx.set('Access-Control-Allow-Origin', '*');
+    ctx.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
 
   } catch(err) {
     ctx.status = err.status;
