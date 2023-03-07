@@ -25,9 +25,24 @@ router.all('/ag(.*)', async (ctx) => { await appGyver(ctx); });
 // app
 const app = new Koa();
 app
+  .use(handleErrors)
   .use(cors())
   .use(koaBody())
   .use(router.routes());
+
+// error handler for all processing within app
+async function handleErrors(ctx, next) {
+  try {
+    await next();
+  } catch (err) {
+    ctx.status = err.status || 500;
+    console.error(err.stack);
+    ctx.body = { 
+      status: ctx.status,
+      message: err.stack 
+    };
+  }
+};
 
 // https listener - certificates  
 var options = {
