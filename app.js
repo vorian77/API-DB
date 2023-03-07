@@ -6,6 +6,7 @@ const fs = require('fs');
 const https = require('https');
 
 const Koa = require('koa');
+const cors = require('@koa/cors');
 const { koaBody } = require('koa-body');
 const Router = require('koa-router');
 
@@ -24,6 +25,7 @@ router.all('/ag(.*)', async (ctx) => { await appGyver(ctx); });
 // app
 const app = new Koa();
 app
+  .use(cors())
   .use(koaBody())
   .use(router.routes());
 

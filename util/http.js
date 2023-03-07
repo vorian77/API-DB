@@ -4,7 +4,7 @@ const axios = require('axios');
 const qs = require('qs'); 
 
 module.exports = async function (method, url, ctx) {
-  let options = { method, url, timeout: 1000 };
+  let options = { method, url };
 
   switch(method.toLowerCase()) {
     case 'get':

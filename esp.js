@@ -31,11 +31,8 @@ async function transmit(ctx) {
     } else {
       ctx.body = rtn.data
     }  
-    ctx.set('Access-Control-Allow-Origin', '*');
-    ctx.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
-
   } catch(err) {
+    console.error(err.message);
     ctx.status = err.status;
     ctx.body = err.response.data || err.message;
   }        
